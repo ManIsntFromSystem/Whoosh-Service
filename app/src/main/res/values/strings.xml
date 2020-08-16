@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Whoosh Service</string>
+    <string name="btn_go_to_scan">Go to Scan</string>
+    <string name="scan_menu">Scan</string>
+    <string name="history_menu">History</string>
+</resources>
