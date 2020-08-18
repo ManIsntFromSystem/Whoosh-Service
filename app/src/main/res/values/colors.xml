@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorPrimaryDark">#FF8C00</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="colorTranslucent">#635846</color>
+    <color name="colorWhite">#FAFFFF</color>
+    <color name="colorPrimaryWhoosh">#FFD600</color>
+    <color name="colorPrimaryWhoosh_2">#FFA200</color>
+    <color name="colorBackgroundWhoosh">#171717</color>
+    <color name="color_btn_whoosh">#FF0307</color>
+
+<!-- #3700B3-->
 </resources>
+

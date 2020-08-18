@@ -7,6 +7,10 @@
 
     <item android:id="@+id/history_menu"
         android:title="@string/history_menu"
-        android:icon="@drawable/ic_nfc"/>
+        android:icon="@drawable/ic_history_48"/>
+
+    <item android:id="@+id/settings_menu"
+        android:title="@string/settings_menu"
+        android:icon="@drawable/ic_settings_48"/>
 
 </menu>

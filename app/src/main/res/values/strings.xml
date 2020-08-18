@@ -3,4 +3,27 @@
     <string name="btn_go_to_scan">Go to Scan</string>
     <string name="scan_menu">Scan</string>
     <string name="history_menu">History</string>
+    <string name="settings_menu">Settings</string>
+
+
+    <string name="connection_error">Отсутствует Интернет Соединение</string>
+    <string name="unknown_error">Что-то пошло не так :(</string>
+    <string name="unknown_url_error">Неизвестный тип Qr кода</string>
+    <string name="valid_api_key_error">Попробуйте другой Api ключ</string>
+    <string name="txt_prev_name_scooter">Код:</string>
+    <string name="txt_prev_status_scooter">Статус:</string>
+    <string name="txt_prev_comments_scooter">Коментарий:</string>
+    <string name="text_holder_comments">Этот скутер в хорошем состоянии, кроме того, что он разряжен
+    Этот скутер в хорошем состоянии, кроме того, что он разряжен
+    Этот скутер в хорошем состоянии, кроме того, что он разряжен
+    Этот скутер в хорошем состоянии, кроме того, что он разряжен
+    Этот скутер в хорошем состоянии, кроме того, что он разряжен
+    Этот скутер в хорошем состоянии, кроме того, что он разряжен
+    Этот скутер в хорошем состоянии, кроме того, что он разряжен</string>
+    <string name="txt_btn_change_api_key">Изменить</string>
+    <string name="txt_btn_clear_all">Удалить все записи</string>
+    <string name="txt_btn_show_current_key">Показать текущий API ключ</string>
+    <string name="empty_api_error">Введите Api ключ!</string>
+    <string name="text_holder_no_items">Еще нет записей</string>
+    <string name="hint_input_api">Api ключ</string>
 </resources>

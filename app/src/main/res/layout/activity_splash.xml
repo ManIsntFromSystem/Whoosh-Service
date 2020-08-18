@@ -4,31 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryWhoosh"
     tools:context=".ui.activities.SplashActivity">
 
-    <EditText
-        android:id="@+id/edTxtApiKey"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tvTxtApiKey"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:inputType="text"
-        android:lines="3"
-        android:autofillHints="Input Your API KEY"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:endIconMode="clear_text"
+        app:hintEnabled="true"
+        app:boxStrokeColor="@color/colorPrimary"
+        app:hintTextColor="@color/colorPrimary"
+        android:textColorHint="@color/colorPrimary"
+        android:hint="@string/hint_input_api"
+        app:errorTextColor="@color/color_btn_whoosh"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="LabelFor" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edTxtApiKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:background="@null"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnCheckApiKey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/color_btn_whoosh"
+        android:shadowRadius="8"
         android:text="@string/btn_go_to_scan"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edTxtApiKey" />
+        app:layout_constraintEnd_toEndOf="@+id/tvTxtApiKey"
+        app:layout_constraintStart_toStartOf="@+id/tvTxtApiKey"
+        app:layout_constraintTop_toBottomOf="@+id/tvTxtApiKey" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,16 +5,17 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.quantumman.whooshservice.R
 import com.quantumman.whooshservice.data.local.pref.PreferencesRepository
 import com.quantumman.whooshservice.util.checkValidApiKey
+import com.quantumman.whooshservice.util.showSnack
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
@@ -25,20 +26,24 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         pref = PreferencesRepository(this)
-        checkPermission()
         btnCheckApiKey.setOnClickListener { checkValue() }
+        checkPermission()
+
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            checkPermission()
+//        }, 300)
     }
 
     private fun checkPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            pref.getPrefApiKey()?.let { if (it.isNotEmpty()) goToMainActivity() }
-        } else requestPermission()
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+            requestPermission()
+        else pref.getPrefApiKey()?.let { if (it.isNotEmpty()) goToMainActivity() }
     }
 
-    private fun requestPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), cameraCodePermission)
+    private fun requestPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 50)
 
     private fun checkValue() {
-        val key = edTxtApiKey.text.trim().toString()
+        val key = edTxtApiKey.text?.trim().toString()
         if (key.length < 15 || key.checkValidApiKey()){
             Toast.makeText(this, "Некоректнный ApiKey, попробуйте еще", Toast.LENGTH_LONG).show()
             Log.d(TAG, "Incorrect ApiKey: $key")
@@ -56,8 +61,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == cameraCodePermission) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                Log.d(TAG, "There is permission")
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) Log.d(TAG, "There is permission")
             else if (isUserPermanentDelayed()) { showDialogGoToSettings() }
             else requestPermission()
         }
@@ -69,7 +73,7 @@ class SplashActivity : AppCompatActivity() {
         .setPositiveButton("OK") { _, _ ->
             goToSettings() }
         .setNegativeButton("Отмена") { _, _ ->
-            Toast.makeText(this, "Для запуска приложения, разрешите доступ к камере", Toast.LENGTH_SHORT)
+            showSnack("Для запуска приложения, разрешите доступ к камере")
             finish()
         }.show()
 

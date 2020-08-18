@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundWhoosh"
+    tools:context=".ui.fragments.history.HistoryFragment"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerHistory"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:visibility="invisible"
+        android:background="@color/colorBackgroundWhoosh"
+        tools:listitem="@layout/item_recycler_status"/>
+
+    <include
+        android:id="@+id/layoutPlaceHolder"
+        layout="@layout/place_holder_recycler" />
+</androidx.constraintlayout.widget.ConstraintLayout>

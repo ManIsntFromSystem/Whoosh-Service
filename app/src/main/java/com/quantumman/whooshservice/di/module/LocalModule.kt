@@ -11,14 +11,13 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class LocalModule {
-
-
+class  LocalModule {
     @Provides
     @Singleton
     fun provideAppDatabase(context: Context): AppDatabase {
         return Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME)
             .fallbackToDestructiveMigration()
+            .allowMainThreadQueries()
             .build()
     }
 

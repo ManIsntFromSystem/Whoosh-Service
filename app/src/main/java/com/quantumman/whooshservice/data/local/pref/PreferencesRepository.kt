@@ -5,11 +5,11 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.quantumman.whooshservice.util.AppContract
 import com.quantumman.whooshservice.util.AppContract.PREF_NAME
-import dagger.Provides
 import javax.inject.Inject
 import javax.inject.Singleton
 
-class PreferencesRepository(context: Context) {
+@Singleton
+class PreferencesRepository @Inject constructor(context: Context) {
 
     private val pref = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE)
 

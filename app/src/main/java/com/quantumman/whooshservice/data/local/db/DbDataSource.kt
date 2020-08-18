@@ -1,12 +1,14 @@
 package com.quantumman.whooshservice.data.local.db
 
-import androidx.lifecycle.LiveData
-import com.quantumman.whooshservice.data.model.db.Message
 import com.quantumman.whooshservice.data.model.Result
+import com.quantumman.whooshservice.data.model.db.Message
+import com.quantumman.whooshservice.ui.model.StatusScooterDataItem
+import kotlinx.coroutines.flow.Flow
 
 interface DbDataSource {
-    suspend fun insertMessage(message: Message)
-    suspend fun deleteMessage(message: Message)
-    suspend fun findById(id: Int): Result<Message>
-    fun allMessages(): LiveData<List<Message>>
+    fun insertMessage(message: Message): Long
+    fun delete(message: Message)
+    fun deleteAll()
+    fun findById(id: Long): Result<Message>
+    suspend fun allMessages(): Flow<List<StatusScooterDataItem>>
 }
