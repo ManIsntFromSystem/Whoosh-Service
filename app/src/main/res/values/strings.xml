@@ -8,7 +8,7 @@
 
     <string name="connection_error">Отсутствует Интернет Соединение</string>
     <string name="unknown_error">Что-то пошло не так :(</string>
-    <string name="unknown_url_error">Неизвестный тип Qr кода</string>
+    <string name="unknown_qr_code">Неизвестный тип кода</string>
     <string name="valid_api_key_error">Попробуйте другой Api ключ</string>
     <string name="txt_prev_name_scooter">Код:</string>
     <string name="txt_prev_status_scooter">Статус:</string>
@@ -26,4 +26,6 @@
     <string name="empty_api_error">Введите Api ключ!</string>
     <string name="text_holder_no_items">Еще нет записей</string>
     <string name="hint_input_api">Api ключ</string>
+    <string name="btn_input_code">Ок</string>
+    <string name="hint_input_code">Ввести код</string>
 </resources>

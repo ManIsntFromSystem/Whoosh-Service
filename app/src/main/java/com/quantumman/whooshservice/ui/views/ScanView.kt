@@ -8,6 +8,7 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(value = AddToEndSingleStrategy::class)
 interface ScanView: MvpView {
     fun showError(error: Int)
+    fun showError(error: String)
     fun showResultScanned(statusScooter: StatusScooterDataItem)
     fun resumeCameraPreview()
 }

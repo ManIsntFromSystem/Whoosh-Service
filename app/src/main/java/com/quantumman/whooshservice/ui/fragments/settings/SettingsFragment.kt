@@ -31,9 +31,6 @@ class SettingsFragment : MvpAppCompatFragment(), SettingsView {
         setView.btnChangeApiKey.setOnClickListener {
             settingsPresenter.changeApiKey(editChangeApiKey.text.toString().trim())
         }
-        setView.tvChangeApiKey.addOnEditTextAttachedListener {
-            setView.editChangeApiKey.text?.clear()
-        }
         setView.btnClearAllStatus.setOnClickListener { showDialogDeleteAll() }
         setView.btnShowCurrentApiKey.setOnClickListener { settingsPresenter.showCurrentApiKey() }
     }

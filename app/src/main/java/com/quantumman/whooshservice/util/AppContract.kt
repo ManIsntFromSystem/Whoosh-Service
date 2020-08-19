@@ -7,7 +7,8 @@ object AppContract {
     const val DEFAULT_QR_URL = "https://whoosh.app.link/scooter"
     const val DEFAULT_API_URL = "https://api.whoosh.bike/challenge/getinfo?code=P364"
 
-    const val PLACE_HOLDER_COMMENTS = "Этот скутер в хорошем состоянии, кроме того, что он разряжен\n" +
+    const val MOCK_MESSAGE_STATUS = "BATTERY LOW AND SOMETHING ELSE"
+    const val MOCK_MESSAGE_COMMENTS = "Этот скутер в хорошем состоянии, кроме того, что он разряжен\n" +
             "Этот скутер в хорошем состоянии, кроме того, что он разряжен\n" +
             "Этот скутер в хорошем состоянии, кроме того, что он разряжен\n" +
             "Этот скутер в хорошем состоянии, кроме того, что он разряжен\n" +

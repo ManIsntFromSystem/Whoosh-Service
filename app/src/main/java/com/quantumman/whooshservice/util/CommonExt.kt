@@ -1,7 +1,9 @@
 package com.quantumman.whooshservice.util
 
 import android.app.Activity
+import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
@@ -23,6 +25,8 @@ fun StatusScooterDataItem?.convertMessageToIntent(): String = this?.let {
 } ?: ""
 
 fun String.checkValidApiKey() = ("[^a-zA-Z0-9.]".toRegex()).containsMatchIn(this)
+
+fun String.isSimpleCode() = ("[A-Z]+[0-9]{3}".toRegex()).matches(this.takeLast(4))
 
 fun Calendar.fromCalendarToDisplay(): String = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault()).format(this.time)
 
@@ -48,4 +52,15 @@ inline fun View.snack(message: String, length: Int = Snackbar.LENGTH_SHORT, f: S
 fun Snackbar.action(action: String, color: Int? = null, listener: (View) -> Unit) {
     setAction(action, listener)
     color?.let { setActionTextColor(it) }
+}
+
+fun Context.isConnectedToNetwork(): Boolean {
+    val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+    return connectivityManager?.activeNetworkInfo?.isConnectedOrConnecting ?: false
+}
+fun main() {
+    val code = "j456"
+    if (code.isNotEmpty() && code.startsWith(AppContract.DEFAULT_QR_URL).not() && code.capitalize().isSimpleCode().not()) {
+        println("Unknown")
+    } else println("Well done")
 }

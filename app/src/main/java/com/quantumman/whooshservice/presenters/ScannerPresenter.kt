@@ -1,5 +1,6 @@
 package com.quantumman.whooshservice.presenters
 
+import android.content.Context
 import android.util.Log
 import com.quantumman.whooshservice.App
 import com.quantumman.whooshservice.R
@@ -10,7 +11,8 @@ import com.quantumman.whooshservice.data.model.db.Message
 import com.quantumman.whooshservice.ui.model.StatusScooterDataItem
 import com.quantumman.whooshservice.ui.views.ScanView
 import com.quantumman.whooshservice.util.AppContract.DEFAULT_QR_URL
-import com.quantumman.whooshservice.util.AppContract.PLACE_HOLDER_COMMENTS
+import com.quantumman.whooshservice.util.isConnectedToNetwork
+import com.quantumman.whooshservice.util.isSimpleCode
 import com.quantumman.whooshservice.util.toMessage
 import com.quantumman.whooshservice.util.toStatusScooterDataItem
 import moxy.InjectViewState
@@ -23,23 +25,46 @@ class ScannerPresenter : MvpPresenter<ScanView>() {
     @Inject
     lateinit var manager: DataManager
 
-    fun handleNewMessage(url: String) {
-        if (url.isNotEmpty() && url.startsWith(DEFAULT_QR_URL).not()) {
-            viewState.showError(R.string.unknown_url_error)
-        } else if (url.isNotEmpty() && url.startsWith(DEFAULT_QR_URL)) {
-            fetchScooterStatus(url.takeLast(4))
-        } else viewState.resumeCameraPreview()
+    fun handleNewMessage(code: String, context: Context) = when {
+        code.isNotEmpty() && code.startsWith(DEFAULT_QR_URL).not() && code.capitalize().isSimpleCode().not() -> {
+            viewState.showError(R.string.unknown_qr_code)
+        }
+        code.isNotEmpty() && code.startsWith(DEFAULT_QR_URL) && code.takeLast(4).capitalize().isSimpleCode() ->  {
+            fetchScooterStatus(code.takeLast(4).capitalize(), context)
+        }
+        code.isNotEmpty() && code.takeLast(4).capitalize().isSimpleCode() -> {
+            fetchScooterStatus(code.takeLast(4).capitalize(), context)
+        }
+        else -> viewState.resumeCameraPreview()
     }
 
-    private fun fetchScooterStatus(scooterName: String) {
+    private fun fetchScooterStatus(scooterName: String, context: Context) {
+        //Mock data for test
+//        val mockData = MessageResponse(status = MOCK_MESSAGE_STATUS, comments = MOCK_MESSAGE_COMMENTS)
+//        insertNewMessageToDB(apiMessage = mockData, scooter = scooterName)
+//        return
+        if (context.isConnectedToNetwork().not()) {
+            viewState.showError(R.string.connection_error)
+            viewState.resumeCameraPreview()
+            return
+        }
         val apiKey = manager.getPreferencesRepository().getPrefApiKey()
-        Log.d(TAG, "ApiKey: $apiKey")
         if (apiKey.isNullOrEmpty()) {
+            Log.d(TAG, "ApiKey: $apiKey")
+            viewState.resumeCameraPreview()
             viewState.showError(R.string.valid_api_key_error)
-        } else {
-//            val mess = manager.getApiRepository().getMessage(code = scooterName, apiKey = apiKey)
-            val apiMessage = MessageResponse("Status", PLACE_HOLDER_COMMENTS)
-            insertNewMessageToDB(apiMessage = apiMessage, scooter = scooterName)
+            return
+        }
+        when (val mess = manager.getApiRepository().getMessage(code = scooterName, apiKey = apiKey)) {
+            is Result.Success -> insertNewMessageToDB(
+                apiMessage = mess.data,
+                scooter = scooterName
+            )
+            is Result.Error -> {
+                viewState.showError(error = "Ошибка загрузки")
+                viewState.resumeCameraPreview()
+                Log.d(TAG, "Status: ${mess.statusCode} \n Message: ${mess.message}")
+            }
         }
     }
 
@@ -68,9 +93,7 @@ class ScannerPresenter : MvpPresenter<ScanView>() {
 
     fun resumePreview() = viewState.resumeCameraPreview()
 
-    fun deleteScannedScooter(scooter: StatusScooterDataItem) {
-        manager.getDbRepository().delete(scooter.toMessage())
-    }
+    fun deleteScannedScooter(scooter: StatusScooterDataItem) = manager.getDbRepository().delete(scooter.toMessage())
 
     init { App.graph.inject(this) }
 

@@ -19,6 +19,7 @@
         app:hintTextColor="@color/colorPrimary"
         android:textColorHint="@color/colorPrimary"
         android:hint="@string/hint_input_api"
+        app:endIconTint="@color/color_btn_whoosh"
         app:errorTextColor="@color/color_btn_whoosh"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintEnd_toStartOf="@+id/btnChangeApiKey"
@@ -30,6 +31,7 @@
             android:id="@+id/editChangeApiKey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
             android:inputType="text"
             android:background="@null"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -53,7 +55,7 @@
         android:id="@+id/btnClearAllStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:backgroundTint="@color/color_btn_whoosh"
@@ -70,7 +72,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:backgroundTint="@color/color_btn_whoosh"
         android:text="@string/txt_btn_show_current_key"
         android:textColor="@color/colorWhite"

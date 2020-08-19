@@ -27,6 +27,7 @@ class SplashActivity : AppCompatActivity() {
 
         pref = PreferencesRepository(this)
         btnCheckApiKey.setOnClickListener { checkValue() }
+
         checkPermission()
 
 //        Handler(Looper.getMainLooper()).postDelayed({
@@ -35,12 +36,12 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun checkPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
             requestPermission()
         else pref.getPrefApiKey()?.let { if (it.isNotEmpty()) goToMainActivity() }
     }
 
-    private fun requestPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 50)
+    private fun requestPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), cameraCodePermission)
 
     private fun checkValue() {
         val key = edTxtApiKey.text?.trim().toString()
