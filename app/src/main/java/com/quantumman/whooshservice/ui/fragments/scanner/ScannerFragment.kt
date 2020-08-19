@@ -16,7 +16,6 @@ import com.quantumman.whooshservice.R
 import com.quantumman.whooshservice.presenters.ScannerPresenter
 import com.quantumman.whooshservice.ui.model.StatusScooterDataItem
 import com.quantumman.whooshservice.ui.views.ScanView
-import com.quantumman.whooshservice.util.KeyboardUtils
 import com.quantumman.whooshservice.util.snack
 import kotlinx.android.synthetic.main.fragment_scanner.view.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
@@ -42,20 +41,14 @@ class ScannerFragment : MvpAppCompatFragment(), ZXingScannerView.ResultHandler, 
         return scannerView.rootView
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        KeyboardUtils.addKeyboardToggleListener(activity!!,  object : KeyboardUtils.SoftKeyboardToggleListener {
-            override fun onToggleSoftKeyboard(isVisible: Boolean) {
-                val params = scannerView.tvLayoutInputCode.layoutParams as ConstraintLayout.LayoutParams
-                if (isVisible) {
-                    params.verticalBias = 0.1f
-                    scannerView.tvLayoutInputCode.layoutParams = params
-                } else {
-                    params.verticalBias = 0.9f
-                    scannerView.tvLayoutInputCode.layoutParams = params
-                }
-            }
-        })
+    private fun paramsForEdInputCode(isVisible: Boolean) {
+
+    }
+
+    private fun paramsForFlash(isVisible: Boolean) {
+        val params = scannerView.ivFlash.layoutParams as ConstraintLayout.LayoutParams
+        return if (isVisible) scannerView.tvLayoutInputCode.layoutParams = params.apply { verticalBias = 0.1f }
+                else scannerView.ivFlash.layoutParams = params.apply { verticalBias = 0.95f }
     }
 
     private fun initInputCode() {
@@ -68,6 +61,7 @@ class ScannerFragment : MvpAppCompatFragment(), ZXingScannerView.ResultHandler, 
         })
         scannerView.btnInputCode.setOnClickListener {
             val code = scannerView.edTxtInputCode.text.toString().trim()
+            scannerView.edTxtInputCode.text?.clear()
             scannerPresenter.handleNewMessage(context = context!!, code = code)
         }
     }

@@ -28,6 +28,7 @@ class ScannerPresenter : MvpPresenter<ScanView>() {
     fun handleNewMessage(code: String, context: Context) = when {
         code.isNotEmpty() && code.startsWith(DEFAULT_QR_URL).not() && code.capitalize().isSimpleCode().not() -> {
             viewState.showError(R.string.unknown_qr_code)
+            viewState.resumeCameraPreview()
         }
         code.isNotEmpty() && code.startsWith(DEFAULT_QR_URL) && code.takeLast(4).capitalize().isSimpleCode() ->  {
             fetchScooterStatus(code.takeLast(4).capitalize(), context)
@@ -39,15 +40,18 @@ class ScannerPresenter : MvpPresenter<ScanView>() {
     }
 
     private fun fetchScooterStatus(scooterName: String, context: Context) {
-        //Mock data for test
-//        val mockData = MessageResponse(status = MOCK_MESSAGE_STATUS, comments = MOCK_MESSAGE_COMMENTS)
-//        insertNewMessageToDB(apiMessage = mockData, scooter = scooterName)
-//        return
         if (context.isConnectedToNetwork().not()) {
             viewState.showError(R.string.connection_error)
             viewState.resumeCameraPreview()
             return
         }
+
+//        Mock data for test
+//        val mockData = MessageResponse(status = MOCK_MESSAGE_STATUS, comments = MOCK_MESSAGE_COMMENTS)
+//        insertNewMessageToDB(apiMessage = mockData, scooter = scooterName)
+//        return
+
+        //Comments this piece of code for test with mockData ->
         val apiKey = manager.getPreferencesRepository().getPrefApiKey()
         if (apiKey.isNullOrEmpty()) {
             Log.d(TAG, "ApiKey: $apiKey")
@@ -66,6 +70,7 @@ class ScannerPresenter : MvpPresenter<ScanView>() {
                 Log.d(TAG, "Status: ${mess.statusCode} \n Message: ${mess.message}")
             }
         }
+        // <-
     }
 
     private fun insertNewMessageToDB(apiMessage: MessageResponse, scooter: String) {

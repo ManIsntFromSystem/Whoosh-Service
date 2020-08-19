@@ -20,18 +20,18 @@
         android:id="@+id/ivFlash"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="24dp"
         android:background="@drawable/bg_flash_selector"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.1"
         tools:ignore="ContentDescription" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tvLayoutInputCode"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
         app:endIconMode="clear_text"
         app:hintEnabled="true"
         app:boxStrokeColor="@color/colorPrimaryWhoosh"
@@ -51,7 +51,7 @@
             android:id="@+id/edTxtInputCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimaryWhoosh"
             android:inputType="text"
             android:background="@null"/>
     </com.google.android.material.textfield.TextInputLayout>
