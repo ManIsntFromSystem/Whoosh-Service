@@ -12,22 +12,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.quantumman.whooshservice.App
 import com.quantumman.whooshservice.R
-import com.quantumman.whooshservice.data.local.pref.PreferencesRepository
+import com.quantumman.whooshservice.data.DataManager
 import com.quantumman.whooshservice.util.checkValidApiKey
 import com.quantumman.whooshservice.util.showSnack
 import kotlinx.android.synthetic.main.activity_splash.*
+import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity() {
-    private lateinit var pref: PreferencesRepository
+
+    @Inject
+    lateinit var manager: DataManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
-        pref = PreferencesRepository(this)
         btnCheckApiKey.setOnClickListener { checkValue() }
-
         checkPermission()
 
 //        Handler(Looper.getMainLooper()).postDelayed({
@@ -38,7 +39,7 @@ class SplashActivity : AppCompatActivity() {
     private fun checkPermission() {
         when {
             ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED -> requestPermission()
-            pref.getPrefApiKey().isNullOrEmpty().not() -> goToMainActivity()
+            manager.getPreferencesRepository().getPrefApiKey().isNullOrEmpty().not() -> goToMainActivity()
             else -> Log.d(TAG, "Unknown state")
         }
     }
@@ -51,7 +52,7 @@ class SplashActivity : AppCompatActivity() {
             Toast.makeText(this, "Некоректнный ApiKey, попробуйте еще", Toast.LENGTH_LONG).show()
             Log.d(TAG, "Incorrect ApiKey: $key")
         } else {
-            pref.setPrefApiKey(key)
+            manager.getPreferencesRepository().setPrefApiKey(key)
             goToMainActivity()
         }
     }
@@ -98,6 +99,10 @@ class SplashActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         checkPermission()
+    }
+
+    init {
+        App.graph.inject(this)
     }
 
     companion object {

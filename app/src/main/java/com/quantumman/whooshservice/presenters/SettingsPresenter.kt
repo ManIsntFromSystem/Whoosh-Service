@@ -20,7 +20,7 @@ class SettingsPresenter : MvpPresenter<SettingsView>() {
     fun changeApiKey(text: String) {
         if (text.isNotEmpty() && text.length > 15 && text.checkValidApiKey()) {
             try {
-                manager.getPreferencesRepository().setPrefApiKey(text.replace(" ", ""))
+                manager.getPreferencesRepository().setPrefApiKey(text)
                 viewState.changeApiKey()
             } catch (e: Exception) { println(e)}
         }
