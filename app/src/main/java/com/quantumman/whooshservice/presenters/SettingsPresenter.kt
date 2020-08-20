@@ -4,6 +4,7 @@ import com.quantumman.whooshservice.App
 import com.quantumman.whooshservice.R
 import com.quantumman.whooshservice.data.DataManager
 import com.quantumman.whooshservice.ui.views.SettingsView
+import com.quantumman.whooshservice.util.checkValidApiKey
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import moxy.InjectViewState
@@ -17,7 +18,7 @@ class SettingsPresenter : MvpPresenter<SettingsView>() {
     lateinit var manager: DataManager
 
     fun changeApiKey(text: String) {
-        if (text.isNotEmpty()) {
+        if (text.isNotEmpty() && text.length > 15 && text.checkValidApiKey()) {
             try {
                 manager.getPreferencesRepository().setPrefApiKey(text.replace(" ", ""))
                 viewState.changeApiKey()

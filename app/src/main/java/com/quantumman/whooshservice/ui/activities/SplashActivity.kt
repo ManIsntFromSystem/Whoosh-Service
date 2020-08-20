@@ -36,9 +36,11 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun checkPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-            requestPermission()
-        else pref.getPrefApiKey()?.let { if (it.isNotEmpty()) goToMainActivity() }
+        when {
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED -> requestPermission()
+            pref.getPrefApiKey().isNullOrEmpty().not() -> goToMainActivity()
+            else -> Log.d(TAG, "Unknown state")
+        }
     }
 
     private fun requestPermission() = ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), cameraCodePermission)

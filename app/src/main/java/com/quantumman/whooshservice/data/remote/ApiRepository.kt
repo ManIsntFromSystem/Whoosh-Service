@@ -12,9 +12,9 @@ class ApiRepository @Inject constructor(
     private val api: ScooterService
 ) : RemoteDataSource {
 
-    override fun getMessage(code: String, apiKey: String): Result<MessageResponse> {
+    override suspend fun getMessage(code: String, apiKey: String): Result<MessageResponse> {
         return try {
-            val messageResponse = api.getScooterState(apiKey = apiKey, code = code)
+            val messageResponse = api.getScooterState(code = code, apiKey = apiKey)
             Result.Success(messageResponse)
         } catch (e: Exception) {
             Result.Error(e.localizedMessage)

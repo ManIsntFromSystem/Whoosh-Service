@@ -24,7 +24,7 @@ fun StatusScooterDataItem?.convertMessageToIntent(): String = this?.let {
             "Комментарий: ${it.comments}\n Дата сканирования: ${it.date}"
 } ?: ""
 
-fun String.checkValidApiKey() = ("[^a-zA-Z0-9.]".toRegex()).containsMatchIn(this)
+fun String.checkValidApiKey() = ("[^a-zA-Z0-9.]".toRegex()).containsMatchIn(this).not()
 
 fun String.isSimpleCode() = ("[A-Z]+[0-9]{3}".toRegex()).matches(this.takeLast(4))
 
@@ -63,4 +63,7 @@ fun main() {
     if (code.isNotEmpty() && code.startsWith(AppContract.DEFAULT_QR_URL).not() && code.capitalize().isSimpleCode().not()) {
         println("Unknown")
     } else println("Well done")
+
+    val api = "zJouBcMNMLaG5WhE6LyWMav1vMuFON896ucKSjIm"
+    println(api.checkValidApiKey())
 }

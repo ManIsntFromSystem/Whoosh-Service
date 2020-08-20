@@ -15,6 +15,9 @@ import com.quantumman.whooshservice.util.isConnectedToNetwork
 import com.quantumman.whooshservice.util.isSimpleCode
 import com.quantumman.whooshservice.util.toMessage
 import com.quantumman.whooshservice.util.toStatusScooterDataItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import java.util.*
@@ -59,15 +62,17 @@ class ScannerPresenter : MvpPresenter<ScanView>() {
             viewState.showError(R.string.valid_api_key_error)
             return
         }
-        when (val mess = manager.getApiRepository().getMessage(code = scooterName, apiKey = apiKey)) {
-            is Result.Success -> insertNewMessageToDB(
-                apiMessage = mess.data,
-                scooter = scooterName
-            )
-            is Result.Error -> {
-                viewState.showError(error = "Ошибка загрузки")
-                viewState.resumeCameraPreview()
-                Log.d(TAG, "Status: ${mess.statusCode} \n Message: ${mess.message}")
+        GlobalScope.launch(Dispatchers.IO) {
+            when (val mess = manager.getApiRepository().getMessage(code = scooterName, apiKey = apiKey)) {
+                is Result.Success -> insertNewMessageToDB(
+                    apiMessage = mess.data,
+                    scooter = scooterName
+                )
+                is Result.Error -> {
+                    viewState.showError(error = "Ошибка загрузки")
+                    viewState.resumeCameraPreview()
+                    Log.d(TAG, "Status: ${mess.statusCode} \n Message: ${mess.message}")
+                }
             }
         }
         // <-
@@ -80,20 +85,29 @@ class ScannerPresenter : MvpPresenter<ScanView>() {
             status = apiMessage.status,
             comments = apiMessage.comments)
         Log.d("TAG", "DAO Message: $daoMessage")
-        val idMessage = manager.getDbRepository().insertMessage(message = daoMessage)
-        fetchMessageFromDb(idMessage)
+        try {
+            val idMessage = manager.getDbRepository().insertMessage(message = daoMessage)
+            fetchMessageFromDb(idMessage)
+        } catch (e: Exception) { println(e) }
     }
 
     private fun fetchMessageFromDb(id: Long) {
-        when(val dbResponse = manager.getDbRepository().findById(id = id)) {
-            is Result.Success<Message> -> {
-                viewState.showResultScanned(dbResponse.data.toStatusScooterDataItem())
+        println("fetchMessageFromDb")
+        try {
+            GlobalScope.launch (Dispatchers.Main) {
+                when (val dbResponse = manager.getDbRepository().findById(id = id)) {
+                    is Result.Success<Message> -> {
+                        viewState.showResultScanned(dbResponse.data.toStatusScooterDataItem())
+                        viewState.resumeCameraPreview()
+                    }
+                    is Result.Error -> {
+                        viewState.showError(R.string.unknown_error)
+                        viewState.resumeCameraPreview()
+                        Log.d(TAG, "${dbResponse.statusCode} | ${dbResponse.message}")
+                    }
+                }
             }
-            is Result.Error -> {
-                viewState.showError(R.string.unknown_error)
-                Log.d(TAG, "${dbResponse.statusCode} | ${dbResponse.message}")
-            }
-        }
+        } catch (e: Exception) { println(e) }
     }
 
     fun resumePreview() = viewState.resumeCameraPreview()
