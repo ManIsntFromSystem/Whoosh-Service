@@ -47,7 +47,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun checkValue() {
         val key = edTxtApiKey.text?.trim().toString()
-        if (key.length < 15 || key.checkValidApiKey()){
+        if (key.length < 15 || key.checkValidApiKey().not()){
             Toast.makeText(this, "Некоректнный ApiKey, попробуйте еще", Toast.LENGTH_LONG).show()
             Log.d(TAG, "Incorrect ApiKey: $key")
         } else {
