@@ -7,8 +7,8 @@ For Qr scan was used Zxing library. </br>
 Also there are bottomNavigation, ViewPager2 and a few Material components. </br>
 
 Now api-key isn't available, but there's a possible to mock data during scan - </br>
-<pre>                just comment out/upcomment a place of code in ScannerPresenter</br></pre>
+<pre>            just comment out/upcomment a place of code in ScannerPresenter</br></pre>
 For app working you just need to generete QR code with this url https://whoosh.app.link/scooter?scooter_code=P364 </br>
-or put name into EditText(name = last 4 symbol in the ULR, case is not important).</br>
+or put name into EditText(name = last 4 symbol in the ULR ("P454"), case is not important).</br>
 
 There is checking permission at the SplashActivity and the validation for api-key and QR-code.</br>
